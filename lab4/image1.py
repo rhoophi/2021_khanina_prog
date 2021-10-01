@@ -2,7 +2,7 @@ import pygame
 import pygame.draw as draw
 
 pygame.init()
-#Slomal kod lol
+#Slomal kod lolkek
 FPS = 30
 screen = pygame.display.set_mode((400, 500))
 draw.rect(screen, (255, 255, 255), (0, 0, 400, 500))
