@@ -55,10 +55,10 @@ def glare(x, y, a, b, density=0.5):
 
 def house(color, x, y, width, length, density=255):
     """
-    Функция, рисующая будущий дом.
-    :param color: Цвет будущего дома
-    :param x: Координата х будущего дома
-    :param y: Координата y будущего дома
+    Функция, рисующая дом.
+    :param color: Цвет  дома
+    :param x: Координата х дома
+    :param y: Координата y дома
     :param density: Прозрачность дома(по умолчанию density = 0)
     :param width: Ширина дома
     :param length: Длина дома
