@@ -92,6 +92,17 @@ class Ball:
         if self.timer < FPS * 3:
             pg.draw.circle(screen, self.color, (self.x, self.y), self.r)
 
+    def hit_ball(self, obj):
+        """
+        checks if the ball hits the object.
+        :param obj: object hitting the target
+        :return: True if the target hits the object, False if not
+        """
+        if math.hypot(self.x - obj.x, self.y - obj.y) <= self.r + obj.r:
+            return True
+        else:
+            return False
+
 
 class Target:
     def __init__(self):
@@ -140,7 +151,7 @@ class Target:
         """
         pg.draw.circle(screen, self.color, (self.x, self.y), self.r)
 
-    def hittest(self, obj):
+    def hit_test(self, obj):
         """
         checks if the target hits the object.
         :param obj: object hitting the target
@@ -181,16 +192,6 @@ class Bomb:
         :return:
         """
         pg.draw.circle(screen, self.color, (self.x, self.y), self.r)
-
-    def hitbomb(self, obj):
-        """
-        checks if bomb collides with the object.
-        :param obj: object which hits the bomb
-        """
-        if math.hypot(self.x - obj.x, self.y - obj.y) <= self.r + obj.r:
-            return True
-        else:
-            return False
 
     def clear(self):
         """
@@ -272,6 +273,17 @@ class Gun:
         else:
             self.color = GREY
 
+    def hit_gun(self, obj):
+        """
+        checks if gun collides with the object.
+        :param obj: object which hits the gun
+        """
+
+        if math.hypot(self.x - obj.x, self.y - obj.y) <= self.r + obj.r:
+            return True
+        else:
+            return False
+
     def move_left(self):
         """
         moves the gun to the left.
@@ -345,15 +357,12 @@ class Enemy:
         """
         pg.draw.circle(screen, self.color, (self.x, self.y), self.r)
 
-    def hitenemy(self, obj):
+    def clear(self):
         """
-        checks if enemy collides with the object.
-        :param obj: object which hits with the enemy
+        deletes the waste bomb.
         """
-        if math.hypot(self.x - obj.x, self.y - obj.y) <= self.r + obj.r:
-            return True
-        else:
-            return False
+        self.x, self.y, self.r = -1, -1, 0
+        del self
 
 
 screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -462,25 +471,36 @@ while not finished and timer <= playtime and gun_A.hp > 0 and gun_B.hp > 0:
     for b in balls:
         b.move()
         for t in targets:
-            if t.hittest(b) and b.capacity != 0:
+            if b.hit_ball(t) and b.capacity != 0:
                 t.new_target()
                 score += 1
                 b.capacity -= 1
         if b.capacity == 0:
             b.timer = FPS * 3
+        for enemy in enemies:
+            if b.hit_ball(enemy):
+                enemy.clear()
+                score += 5
+        if b.hit_ball(gun_A):
+            finished = True
+            print("player B killed player A :(")
+        elif b.hit_ball(gun_B):
+            finished = True
+            print("player B killed player A :(")
+
     for enemy in enemies:
         enemy.move()
-        if enemy.hitenemy(gun_A):
+        if gun_A.hit_gun(enemy):
             gun_A.hp -= 1
-        if enemy.hitenemy(gun_B):
+        if gun_B.hit_gun(enemy):
             gun_B.hp -= 1
 
     for bomb in bombs:
-        if bomb.hitbomb(gun_A):
+        if gun_A.hit_gun(bomb):
             gun_A.hp -= 1
             bomb.new_bomb()
             print("BOOM!")
-        if bomb.hitbomb(gun_B):
+        if gun_B.hit_gun(bomb):
             gun_B.hp -= 1
             bomb.new_bomb()
             print("BOOM!")

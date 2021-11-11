@@ -13,7 +13,10 @@ use the mouse!
 
 also remember that guns have capacity, so you can't use an infinite number of pistons in a period of time
 
-enemies can destroy players instantly if they move slowly or deprive player's health points noticeably, also they are
-undestroyable. bombs take 1 healthpoint each time player hits it and respawns. if player's healthpoints go 0, game ends.
+enemies can destroy players instantly if they move slowly or deprive player's health points noticeably. they are
+destroyable: you just need to hit it with piston. bombs take 1 healthpoint each time player hits it and respawns.
+if player's healthpoints go 0, game ends.
+
+if players shoot each other, game ends.
 
 you have 90 seconds to earn as many points, as you can.
